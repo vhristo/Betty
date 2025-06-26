@@ -30,7 +30,7 @@ jobs:
 
       # Step 3: Restore NuGet packages
       - name: Restore dependencies
-        run: dotnet restore '**/*.csproj'
+        run: dotnet restore
 
       # Step 4: Build the application and tests
       - name: Build
