@@ -1,0 +1,41 @@
+# Workflow name displayed in the GitHub Actions tab
+name: .NET Core CI
+
+# Events that trigger the workflow
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests targeting the main branch
+
+# Define the jobs to be executed
+jobs:
+  build:
+    # Specify the runner environment
+    runs-on: ubuntu-latest
+
+    # Define the steps for the build job
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the .NET SDK
+      - name: Setup .NET 8.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x' # Use the latest 8.x version
+
+      # Step 3: Restore NuGet packages
+      - name: Restore dependencies
+        run: dotnet restore '**/*.csproj'
+
+      # Step 4: Build the application and tests
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # Step 5: Run tests
+      - name: Run tests
+        run: dotnet test --configuration Release --no-build --verbosity normal
